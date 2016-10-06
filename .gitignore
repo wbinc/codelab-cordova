@@ -1,0 +1,12 @@
+bower_components/
+platforms/
+node_modules/
+platforms/
+plugins/
+www/build/
+
+# Resources
+resources/signing
+
+# Mac
+.DS_Store
