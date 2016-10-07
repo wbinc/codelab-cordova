@@ -42,16 +42,13 @@
             margin: 0;
             padding: 0;
           }
-          #map {
-            height: 100%;
-          }
-
-          .m-top-15 {
-            margin-top: 15px;
-          }
 
           .m-top-100 {
             margin-top: 100px;
+          }
+
+          #reading-x, #reading-y, #reading-z {
+            font-size: 28px;
           }
         </style>
 
@@ -72,16 +69,17 @@
             <ul class="nav navbar-nav">
               <li><a href="./index.html">Responsive</a></li>
               <li><a href="./geo.html">Geolocation</a></li>
-              <li class="active"><a href="./camera.html">Camera</a></li>
-              <li><a href="./gyro.html">Gyroscope</a></li>
+              <li><a href="./camera.html">Camera</a></li>
+              <li class="active"><a href="./gyro.html">Gyroscope</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </nav>
 
       <div class="container text-center m-top-100">
-        <button id="btn-snap" class="btn btn-primary btn-lg">Snap!</button>
-        <img id="myImage" class="img-responsive m-top-15">
+        <p id="reading-x">Reading...</p>
+        <p id="reading-y">Reading...</p>
+        <p id="reading-z">Reading...</p>
       </div>
 
       <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -89,22 +87,31 @@
       <script type="text/javascript" src="cordova.js"></script>
       <!-- <script type="text/javascript" src="js/index.js"></script> -->
       <script>
+        var gyroscope
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
+          gyroscope = navigator.gyroscope;
+          function onSuccess(acceleration) {
+              // alert('Acceleration X: ' + acceleration.x + '\n' +
+              //       'Acceleration Y: ' + acceleration.y + '\n' +
+              //       'Acceleration Z: ' + acceleration.z + '\n' +
+              //       'Timestamp: '      + acceleration.timestamp + '\n');
+              $('#reading-x').html(acceleration.x.toFixed(4));
+              $('#reading-y').html(acceleration.y.toFixed(4));
+              $('#reading-z').html(acceleration.z.toFixed(4));
 
-          $('#btn-snap').click(function(){
-            navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-                destinationType: Camera.DestinationType.FILE_URI });
-          })
-
-          function onSuccess(imageURI) {
-              var image = document.getElementById('myImage');
-              image.src = imageURI;
+              if( acceleration.z > 4 ) {
+                navigator.notification.beep(1);
+              }
           }
 
-          function onFail(message) {
-              alert('Failed because: ' + message);
+          function onError() {
+              alert('onError!');
           }
+
+          var options = { frequency: 100 };  // Update every 3 seconds
+
+          var watchID = gyroscope.watch(onSuccess, onError, options);
 
         };
       </script>
