@@ -80,7 +80,7 @@
       </nav>
 
       <div class="container text-center m-top-100">
-        <button class="btn btn-primary btn-lg">Snap!</button>
+        <button id="btn-snap" class="btn btn-primary btn-lg">Snap!</button>
         <img id="myImage" class="img-responsive m-top-15">
       </div>
 
@@ -92,8 +92,10 @@
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
 
-          navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-              destinationType: Camera.DestinationType.FILE_URI });
+          $('#btn-snap').click(function(){
+            navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+                destinationType: Camera.DestinationType.FILE_URI });
+          })
 
           function onSuccess(imageURI) {
               var image = document.getElementById('myImage');
