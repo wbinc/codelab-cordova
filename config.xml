@@ -25,4 +25,5 @@
     </platform>
     <engine name="android" spec="~5.2.2" />
     <plugin name="cordova-plugin-geolocation" spec="~2.4.0" />
+    <plugin name="cordova-plugin-camera" spec="~2.3.0" />
 </widget>
